@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1330" viewBox="0 0 1000 1330" role="img" aria-labelledby="title desc">
+  <title id="title">BusTub Project 1 缓冲池整体数据流</title>
+  <desc id="desc">调用方请求页面，缓冲池查询页表。命中时复用内存帧；未命中时使用空闲帧或 ARC 淘汰帧，先写回脏页，再通过磁盘调度器读入目标页。固定页面后构造读写 Guard，释放时解锁并减少固定计数。</desc>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse"><path d="M0 0 L8 4 L0 8Z" fill="#637351"/></marker></defs>
+  <style>
+    text { font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #30352f; font-size: 17px; text-anchor: middle; }
+    .heading { font-size: 20px; font-weight: 600; } .small { font-size: 15px; fill: #62695b; }
+    .box { fill: #fffefb; stroke: #c7ccbd; stroke-width: 1.5; rx: 12; }
+    .green { fill: #edf2e5; stroke: #879874; } .disk { fill: #eeeef6; stroke: #a4a4b9; }
+    .line { fill: none; stroke: #637351; stroke-width: 2; marker-end: url(#arrow); }
+    .dashed { stroke-dasharray: 6 5; } .label { font-size: 15px; fill: #637351; }
+  </style>
+  <rect width="1000" height="1330" fill="#faf9f6"/>
+  <text x="500" y="35" class="heading">从一次页面访问，到帧的再次可用</text>
+  <rect class="box green" x="280" y="65" width="440" height="80"/>
+  <text x="500" y="98" class="heading">调用方：ReadPage / WritePage</text><text x="500" y="125" class="small">传入 page_id，申请只读 / 可写访问</text>
+  <path class="line" d="M500 145V185"/>
+  <rect class="box" x="280" y="185" width="440" height="85"/>
+  <text x="500" y="218" class="heading">BufferPoolManager 查询 page_table_</text><text x="500" y="247" class="small">page_id → frame_id（BPM 锁保护元数据）</text>
+  <path class="line" d="M390 270V310H315V335"/><text x="335" y="303" class="label">未命中</text>
+  <path class="line" d="M720 227H825V335"/><text x="787" y="216" class="label">命中</text>
+  <rect class="box" x="75" y="335" width="480" height="65"/><text x="315" y="374" class="heading">获取可用帧</text>
+  <rect class="box green" x="690" y="335" width="275" height="95"/><text x="827" y="369" class="heading">定位已缓存的帧</text><text x="827" y="400" class="small">无需磁盘 I/O</text>
+  <path class="line" d="M205 400V447"/><path class="line" d="M425 400V447"/>
+  <rect class="box" x="75" y="447" width="220" height="95"/><text x="185" y="479">free_frames_ 非空</text><text x="185" y="509" class="small">直接取空闲帧</text>
+  <rect class="box" x="325" y="447" width="230" height="95"/><text x="440" y="479">否则 ArcReplacer::Evict</text><text x="440" y="509" class="small">只选择 evictable 帧</text>
+  <path class="line" d="M555 482H640"/>
+  <text x="724" y="476" class="small">无候选帧 → nullopt</text><text x="771" y="500" class="small">ReadPage / WritePage 包装层会终止进程</text>
+  <path class="line" d="M185 542V575H315V600"/><path class="line" d="M440 542V575H315"/>
+  <rect class="box" x="75" y="600" width="480" height="95"/>
+  <text x="315" y="634" class="heading">若旧页为脏页，先写回并等待完成</text><text x="315" y="665" class="small">移除旧映射，再 Reset 帧；空闲帧跳过旧页处理</text>
+  <path class="line" d="M555 632H675"/><text x="613" y="620" class="label">写请求</text>
+  <path class="line" d="M315 695V745"/>
+  <rect class="box" x="75" y="745" width="480" height="85"/>
+  <text x="315" y="778" class="heading">读入目标页，等待 I/O 完成</text><text x="315" y="807" class="small">磁盘页 → frame.data_（8 KiB）</text>
+  <path class="line" d="M555 774H620V684H675"/><text x="605" y="762" class="label">读请求</text>
+  <rect class="box disk" x="675" y="575" width="290" height="155"/>
+  <text x="820" y="609" class="heading">DiskScheduler</text><text x="820" y="641" class="small">Schedule → Channel 请求队列</text><text x="820" y="670" class="small">后台线程 → DiskManager</text><text x="820" y="700" class="small">ReadPage / WritePage</text>
+  <path class="line" d="M820 730V774"/>
+  <rect class="box disk" x="675" y="774" width="290" height="65"/><text x="820" y="814">外存中的页面</text>
+  <path class="line dashed" d="M675 715H644V810H555"/><text x="757" y="870" class="small">promise.set_value → future.get 返回</text>
+  <path class="line" d="M315 830V904"/>
+  <path class="line" d="M950 430H980V950H555"/>
+  <rect class="box green" x="75" y="904" width="480" height="100"/>
+  <text x="315" y="937" class="heading">固定帧 + 记录访问</text><text x="315" y="966" class="small">pin_count++ / 设为 1；SetEvictable(false)</text><text x="315" y="991" class="small">RecordAccess；未命中路径建立新页表映射</text>
+  <path class="line" d="M315 1004V1044"/>
+  <rect class="box" x="75" y="1044" width="890" height="92"/>
+  <text x="520" y="1077" class="heading">释放 BPM 锁 → 构造 Guard 并获取帧锁 → 访问内存数据</text><text x="520" y="1108" class="small">ReadPageGuard：lock_shared()　｜　WritePageGuard：lock()，允许修改并标脏</text>
+  <path class="line" d="M520 1136V1176"/>
+  <rect class="box green" x="75" y="1176" width="890" height="100"/>
+  <text x="520" y="1210" class="heading">Drop / 析构：解帧锁 → 在 BPM 锁下 pin_count--</text><text x="520" y="1241" class="small">最后一个 Guard 释放后：SetEvictable(true)，帧可供下一次替换</text><text x="520" y="1266" class="small">Guard 析构不自动刷盘；显式 Flush 或脏页淘汰时写回</text>
+  <text x="500" y="1312" class="small">实线：请求与处理流程　｜　虚线：I/O 完成通知　｜　按本地 Project 1 实现整理</text>
+</svg>

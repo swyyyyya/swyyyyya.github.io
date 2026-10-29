@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="610" viewBox="0 0 960 610" style="max-width:100%;height:auto;display:block" role="img" aria-labelledby="title desc"><title id="title">一份页数据，不同的布局约定</title><desc id="desc">缓冲池管理八 KiB 的页数据。B+ 树内部页、叶子页、数据库表页分别采用不同布局；这些是不同页类型的示例，不是同一页的三个同时生效的视图。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#637351"/></marker></defs><style>text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;fill:#30352f;font-size:18px;text-anchor:middle}.title{font-size:23px;font-weight:600}.small{font-size:16px;fill:#62695b}.label{font-size:17px;fill:#62695b}.box{fill:#fffefb;stroke:#c7ccbd;stroke-width:1.5}.green{fill:#edf2e5;stroke:#879874}.purple{fill:#eeeef6;stroke:#a4a4b9}.warm{fill:#f5eee3;stroke:#bba47c}.line{fill:none;stroke:#637351;stroke-width:2;marker-end:url(#arrow)}</style>
+<rect width="960" height="610" fill="#faf9f6"/>
+<text x="480" y="40" class="title">页数据相同大小，语义由布局和访问方法定义</text>
+<rect x="40" y="72" width="880" height="65" rx="10" class="box green"/>
+<text x="480.0" y="110.5" class="">FrameHeader::data_  ·  8 KiB 原始字节</text>
+<text x="480" y="171" class="small">以下是不同页类型的布局示意；各自占用一个页的数据区</text>
+<text x="480" y="193" class="title">内部页</text>
+<rect x="80" y="207" width="176" height="65" rx="10" class="box green"/>
+<text x="168.0" y="245.5" class="">公共页头</text>
+<rect x="260" y="207" width="316" height="65" rx="10" class="box "/>
+<text x="418.0" y="245.5" class="">键数组（key[0] 无效）</text>
+<rect x="580" y="207" width="296" height="65" rx="10" class="box purple"/>
+<text x="728.0" y="245.5" class="">子 page_id 数组</text>
+<text x="480" y="310" class="title">叶子页</text>
+<rect x="80" y="324" width="186" height="65" rx="10" class="box green"/>
+<text x="173.0" y="362.5" class="">公共页头 / next</text>
+<rect x="270" y="324" width="176" height="65" rx="10" class="box warm"/>
+<text x="358.0" y="362.5" class="">墓碑数量 / 下标</text>
+<rect x="450" y="324" width="211" height="65" rx="10" class="box "/>
+<text x="555.5" y="362.5" class="">有序键数组</text>
+<rect x="665" y="324" width="211" height="65" rx="10" class="box purple"/>
+<text x="770.5" y="362.5" class="">RID 数组</text>
+<text x="480" y="427" class="title">表页</text>
+<rect x="80" y="441" width="271" height="65" rx="10" class="box green"/>
+<text x="215.5" y="479.5" class="">页头 / 槽目录 →</text>
+<rect x="355" y="441" width="236" height="65" rx="10" class="box "/>
+<text x="473.0" y="479.5" class="">空闲空间</text>
+<rect x="595" y="441" width="281" height="65" rx="10" class="box purple"/>
+<text x="735.5" y="479.5" class="">← 元组字节</text>
+<text x="480" y="551" class="label">索引叶子条目：key → RID(page_id, slot_num) → TablePage 中的元组</text>
+<text x="480" y="584" class="small">示意图未按字段字节比例绘制；具体字段、对齐和数组容量以本地代码为准</text>
+</svg>

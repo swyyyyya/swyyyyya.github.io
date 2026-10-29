@@ -1,0 +1,41 @@
+body.article-page { max-width: 1040px; }
+.article-page header { margin-bottom: 32px; }
+.article-page h1 { max-width: 850px; }
+.eyebrow, .meta { color: #777e6b; font-size: 14px; }
+.eyebrow { letter-spacing: .08em; margin-bottom: 12px; }
+.lead { color: #64685f; font-size: 18px; max-width: 760px; }
+.toc { border-block: 1px solid #dedfd6; padding: 22px 0; margin: 32px 0 44px; }
+.toc strong { display: block; margin-bottom: 10px; font-size: 14px; }
+.toc ol { display: flex; flex-wrap: wrap; column-gap: 34px; row-gap: 8px; margin: 0; padding-left: 22px; }
+.toc a, article a, .note-card a { color: #566b3d; text-underline-offset: 4px; }
+article section { margin-top: 52px; scroll-margin-top: 24px; }
+article h2 { font-size: 26px; margin-bottom: 20px; line-height: 1.45; }
+article h3 { font-size: 19px; margin: 30px 0 12px; line-height: 1.5; }
+article p, article li { overflow-wrap: anywhere; }
+article li { margin-block: 8px; }
+code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .88em; background: #efeee7; padding: .12em .3em; border-radius: 4px; overflow-wrap: anywhere; }
+pre { margin: 22px 0; padding: 22px; background: #efeee7; border-radius: 10px; overflow-x: auto; line-height: 1.7; }
+pre code { padding: 0; background: transparent; overflow-wrap: normal; }
+.callout { border-left: 3px solid #879874; background: #f0f2e9; padding: 16px 20px; margin: 24px 0; }
+.callout p { margin: 0; }
+figure { margin: 24px 0; }
+.diagram { overflow-x: auto; border: 1px solid #dedfd6; border-radius: 12px; }
+.diagram img { display: block; width: 100%; min-width: 720px; height: auto; }
+figcaption { font-size: 14px; color: #777e6b; padding-top: 12px; }
+.table-wrap { overflow-x: auto; margin: 22px 0; border: 1px solid #dedfd6; border-radius: 10px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; min-width: 650px; text-align: left; }
+caption { text-align: left; padding: 14px 16px; font-weight: 600; background: #f0f2e9; }
+th, td { padding: 14px 16px; border-bottom: 1px solid #dedfd6; vertical-align: top; }
+th { background: #f0f2e9; font-weight: 600; }
+tr:last-child td { border-bottom: 0; }
+.formula { background: #efeee7; padding: 16px 20px; border-radius: 8px; }
+.formula code { display: block; padding: 0; margin-block: 6px; }
+.note-card { border-block: 1px solid #dedfd6; padding: 24px 0; }
+.note-card h2 { margin-bottom: 12px; }
+.note-card h2 a { text-decoration: none; }
+.note-card h2 a:hover { text-decoration: underline; }
+.note-card p { color: #64685f; }
+.article-end { border-top: 1px solid #dedfd6; padding-top: 24px; }
+@media (max-width: 540px) { .toc ol { display: block; } .toc li { margin-block: 8px; } article h2 { font-size: 23px; } .lead { font-size: 16px; } article section { margin-top: 38px; } }
+
+.stl-comparison { min-width: 860px; }

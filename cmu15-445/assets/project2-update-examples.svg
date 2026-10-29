@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="1110" viewBox="0 0 960 1110" style="max-width:100%;height:auto;display:block" role="img" aria-labelledby="title desc"><title id="title">B+ 树插入分裂、删除借用与合并示例</title><desc id="desc">三个独立示例均使用叶子 max size 等于四、最小物理条目数二、关闭墓碑。插入二十五使叶子分裂；删除十后从右兄弟借三十并更新分隔键；兄弟无余量时合并并收缩根。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#637351"/></marker></defs><style>text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;fill:#30352f;font-size:18px;text-anchor:middle}.title{font-size:23px;font-weight:600}.small{font-size:16px;fill:#62695b}.label{font-size:17px;fill:#62695b}.box{fill:#fffefb;stroke:#c7ccbd;stroke-width:1.5}.green{fill:#edf2e5;stroke:#879874}.purple{fill:#eeeef6;stroke:#a4a4b9}.warm{fill:#f5eee3;stroke:#bba47c}.line{fill:none;stroke:#637351;stroke-width:2;marker-end:url(#arrow)}</style>
+<rect width="960" height="1110" fill="#faf9f6"/>
+<text x="480" y="37" class="title">三种结构调整：分裂、借用、合并</text>
+<text x="480" y="70" class="small">三个独立例子 · 叶子 max_size = 4，min_size = 2，NumTombs = 0</text>
+<rect x="20" y="96" width="920" height="296" rx="10" class="box "/>
+<text x="480" y="130" class="title">① 插入 25：叶子达到 4 个条目，分裂并创建新根</text>
+<rect x="55" y="223" width="290" height="65" rx="10" class="box green"/>
+<text x="200.0" y="261.5" class="">原根叶子：10 | 20 | 30</text>
+<path d="M345 255H422" class="line"/>
+<text x="383" y="214" class="label">+ 25</text>
+<rect x="555" y="162" width="200" height="52" rx="10" class="box purple"/>
+<text x="655.0" y="194.0" class="">新根：25</text>
+<path d="M590 214L530 259" class="line"/>
+<path d="M720 214L800 259" class="line"/>
+<rect x="435" y="259" width="200" height="57" rx="10" class="box green"/>
+<text x="535.0" y="293.5" class="">10 | 20</text>
+<rect x="705" y="259" width="200" height="57" rx="10" class="box green"/>
+<text x="805.0" y="293.5" class="">25 | 30</text>
+<path d="M635 288H705" class="line"/>
+<text x="480" y="360" class="small">叶子分裂把右页首键 25 复制到父页；25 仍保留在右叶子中</text>
+<rect x="20" y="410" width="920" height="325" rx="10" class="box "/>
+<text x="480" y="447" class="title">② 删除 10：左叶子下溢，从有余量的右兄弟借一个条目</text>
+<rect x="140" y="475" width="170" height="46" rx="10" class="box purple"/>
+<text x="225.0" y="504.0" class="">父页：30</text>
+<path d="M170 521L120 560" class="line"/>
+<path d="M280 521L345 560" class="line"/>
+<rect x="45" y="560" width="160" height="57" rx="10" class="box green"/>
+<text x="125.0" y="594.5" class="">10 | 20</text>
+<rect x="245" y="560" width="200" height="57" rx="10" class="box green"/>
+<text x="345.0" y="594.5" class="">30 | 40 | 50</text>
+<path d="M205 588H245" class="line"/>
+<path d="M453 581H506" class="line"/>
+<text x="480" y="550" class="label">− 10</text>
+<rect x="655" y="475" width="170" height="46" rx="10" class="box purple"/>
+<text x="740.0" y="504.0" class="">父页：40</text>
+<path d="M685 521L600 560" class="line"/>
+<path d="M795 521L835 560" class="line"/>
+<rect x="520" y="560" width="180" height="57" rx="10" class="box green"/>
+<text x="610.0" y="594.5" class="">20 | 30</text>
+<rect x="745" y="560" width="180" height="57" rx="10" class="box green"/>
+<text x="835.0" y="594.5" class="">40 | 50</text>
+<path d="M700 588H745" class="line"/>
+<text x="480" y="666" class="small">删除后 [20] 不足下限；右页把 30 移到左页末尾，分隔键改为 40</text>
+<text x="480" y="705" class="small">叶子之间移动的是数据条目；父页维护路由边界</text>
+<rect x="20" y="755" width="920" height="330" rx="10" class="box "/>
+<text x="480" y="794" class="title">③ 删除 10：兄弟也无余量，合并后根收缩</text>
+<rect x="140" y="828" width="170" height="46" rx="10" class="box purple"/>
+<text x="225.0" y="857.0" class="">父页：30</text>
+<path d="M170 874L120 917" class="line"/>
+<path d="M280 874L345 917" class="line"/>
+<rect x="45" y="917" width="160" height="57" rx="10" class="box green"/>
+<text x="125.0" y="951.5" class="">10 | 20</text>
+<rect x="245" y="917" width="200" height="57" rx="10" class="box green"/>
+<text x="345.0" y="951.5" class="">30 | 40</text>
+<path d="M205 945H245" class="line"/>
+<path d="M453 945H530" class="line"/>
+<text x="490" y="911" class="label">− 10</text>
+<rect x="560" y="916" width="335" height="65" rx="10" class="box green"/>
+<text x="727.5" y="954.5" class="">新根叶子：20 | 30 | 40</text>
+<text x="480" y="1023" class="small">[20] 与 [30, 40] 合并，父页删除一个子指针，只剩一个孩子</text>
+<text x="480" y="1060" class="small">头页 root_page_id 改为合并后的叶子；释放守卫后回收被摘除页</text>
+</svg>
